@@ -5,8 +5,8 @@ const options = {
   providers: [
     Providers.Google({
       clientId:
-        "924088467564-dvg5vaqm4kv0t8g1fb1t0ea2tle1oscq.apps.googleusercontent.com",
-      clientSecret: "0BWDIh9btZJUUDVye6ytt2ds",
+        process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
     }),
   ],
   session: {
