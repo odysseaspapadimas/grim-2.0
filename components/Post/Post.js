@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Actions from "./Actions";
 import Comments from "./Comments";
 import useDoubleClick from "use-double-click";
+import { useDoubleTap } from "use-double-tap";
 
 const Post = ({
   postId,
@@ -22,11 +23,15 @@ const Post = ({
     console.log("Like");
   };
 
+  const bind = useDoubleTap((event) => {
+    // Your action here
+    console.log("Double tapped");
+  });
+
   return (
     <div className="flex flex-col mb-3">
-      <div className="flex items-center px-2"  onClick={handleDoubleTap} >
+      <div className="flex items-center px-2">
         <img
-          onClick={handleDoubleTap}
           className="rounded-full h-7 w-7 pointer-events-auto"
           style={{ pointerEvents: "all" }}
           src={avatarSrc}
@@ -37,7 +42,7 @@ const Post = ({
           <p className="font-medium ml-2">{username}</p>
         </Link>
       </div>
-      <img className="my-2" src={imageSrc} alt="mountains" />
+      <img {...bind} className="my-2" src={imageSrc} alt="mountains" />
       <div className="px-2">
         <Actions
           postId={postId}
