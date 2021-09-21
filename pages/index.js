@@ -10,6 +10,7 @@ import Navbar from "../components/Navbar";
 import { useMediaQuery } from "@chakra-ui/media-query";
 import Search from "../components/Search";
 import { useRouter } from "next/router";
+import CreatePost from "../components/CreatePost";
 
 export default function Home() {
   const [session] = useSession();
@@ -89,7 +90,7 @@ export default function Home() {
         <meta name="apple-mobile-web-app-capable" content="yes" />
       </Head>
       {tab.selection === "feed" && (
-        <div className="fixed top-0 flex items-center w-full justify-between px-3 py-2 bg-primary border-b-2 border-gray-500">
+        <div className="fixed z-10 top-0 flex items-center w-full justify-between px-3 py-2 bg-primary border-b-2 border-gray-500">
           <h1 className="text-2xl">Parea</h1>
           <Link href="/messages" className="">
             <svg
@@ -114,6 +115,7 @@ export default function Home() {
       <main className="">
         {tab.selection === "feed" && <Feed user={user} />}
         {tab.selection === "search" && <Search />}
+        {tab.selection === "create" && <CreatePost user={user} setTab={setTab} />}
         {tab.selection === "profile" && <Profile user={user} />}
       </main>
 

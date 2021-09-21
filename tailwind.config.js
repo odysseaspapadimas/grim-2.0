@@ -10,6 +10,9 @@ module.exports = {
         secondary: "hsl(345, 67%, 55%)",
         "secondary-hover": "hsl(345, 67%, 45%)",
       },
+      animation: {
+        'ping-long': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite'
+      }
     },
   },
   variants: {

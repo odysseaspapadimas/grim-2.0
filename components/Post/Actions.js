@@ -1,26 +1,14 @@
 import { useEffect, useState } from "react";
 
-const Actions = ({ postId, myUsername, hasLiked, setLikeCount }) => {
+const Actions = ({
+  postId,
+  myUsername,
+  hasLiked,
+  setLikeCount,
+  toggleLiked,
+  handleToggleLiked,
+}) => {
   //my myUsername
-  const [toggleLiked, setToggleLiked] = useState(hasLiked);
-
-  const handleToggleLiked = async (toggle) => {
-    setToggleLiked(toggle);
-
-    setLikeCount((likeCount) => (toggle ? likeCount + 1 : likeCount - 1));
-
-    const res = await fetch("/api/posts/toggleLike", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        postId,
-        username: myUsername,
-        toggleLiked,
-      }),
-    });
-  };
 
   return (
     <div>

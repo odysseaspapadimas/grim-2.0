@@ -54,7 +54,7 @@ const AddComment = ({ myUsername, postId, setComments }) => {
           onChange={(e) => setComment(e.target.value)}
           type="text"
           placeholder="Add a comment..."
-          className="bg-transparent border border-gray-400 w-full mr-3 py-3 px-4"
+          className="bg-transparent border outline-none border-gray-800 focus:border-secondary w-full mr-3 py-2 px-3"
         />
         <div className="text-center mr-2">
           <button

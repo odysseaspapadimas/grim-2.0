@@ -32,7 +32,7 @@ const Navbar = ({ user, tab, setTab }) => {
           />
         </svg>
       </div>
-      <div onClick={() => setTab({ selection: "add" })}>+</div>
+      <div onClick={() => setTab({ selection: "create" })}>+</div>
       <div onClick={() => setTab({ selection: "notifications" })}>Not</div>
       <div onClick={() => setTab({ selection: "profile" })}>
         <img

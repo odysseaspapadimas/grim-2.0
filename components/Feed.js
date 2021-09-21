@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Post from "./Post/Post";
 import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
-import Actions from "./Post/Actions";
 
 const Feed = ({ user }) => {
   const [posts, setPosts] = useState([]);
@@ -18,7 +17,7 @@ const Feed = ({ user }) => {
       }),
     });
     const { posts } = await res.json();
-
+    console.log(posts)
     setPosts(posts);
     setLoading(false);
   };
@@ -28,9 +27,6 @@ const Feed = ({ user }) => {
     fetchPosts();
     console.timeEnd("posts");
   }, []);
-  useEffect(() => {
-    console.log(posts, loading, "eza");
-  }, [posts]);
 
   return (
     <div className="flex flex-col overflow-y-auto" style={{ margin: "52px 0" }}>

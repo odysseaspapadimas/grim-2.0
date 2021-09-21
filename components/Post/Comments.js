@@ -25,7 +25,7 @@ const Comments = ({ allComments, myUsername, postId }) => {
               <Link href={`/p/${comment.username}`}>
                 <p className="font-medium">{comment.username}</p>
               </Link>
-              <p>{comment.content}</p>
+              <p className="text-sm">{comment.content}</p>
             </div>
           ))
         : comments.map((comment, i) => (
@@ -33,7 +33,7 @@ const Comments = ({ allComments, myUsername, postId }) => {
               <Link href={`/p/${comment.username}`}>
                 <p className="font-medium">{comment.username}</p>
               </Link>
-              <p>{comment.content}</p>
+              <p className="text-sm">{comment.content}</p>
             </div>
           ))}
       <AddComment
