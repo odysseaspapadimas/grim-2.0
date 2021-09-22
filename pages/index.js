@@ -14,7 +14,8 @@ import CreatePost from "../components/CreatePost";
 
 export default function Home() {
   const [session] = useSession();
-  const { user } = useUser();
+  const [user, setUser] = useState({});
+
   const [tab, setTab] = useState({ selection: "feed" });
   const [isLargerThan500] = useMediaQuery("(min-width: 650px)");
   const router = useRouter();
@@ -34,15 +35,23 @@ export default function Home() {
       //User exists redirect to dashboard
       router.push("/signup");
     }
-
   };
   useEffect(() => {
     if (session) {
-
       doesUserExist(session.user.email);
     }
   }, [session]);
 
+  useEffect(() => {
+    if (!session) return;
+    const fetchUser = async () => {
+      const { user: newUser } = await useUser(session);
+      if (JSON.stringify(newUser) !== JSON.stringify(user)) {
+        setUser(newUser);
+      } 
+    };
+    fetchUser();
+  }, [tab, session]);
 
   if (isLargerThan500) {
     return (
@@ -52,7 +61,7 @@ export default function Home() {
     );
   }
 
-  if (!user) {
+  if (!user.username) {
     return (
       <div className="w-full min-h-screen flex justify-center items-center">
         <ReactLoading
@@ -113,9 +122,11 @@ export default function Home() {
       )}
 
       <main className="">
-        {tab.selection === "feed" && <Feed user={user} />}
-        {tab.selection === "search" && <Search />}
-        {tab.selection === "create" && <CreatePost user={user} setTab={setTab} />}
+        {tab.selection === "feed" && <Feed user={user} tab={tab} />}
+        {tab.selection === "search" && <Search user={user} />}
+        {tab.selection === "create" && (
+          <CreatePost user={user} setTab={setTab} />
+        )}
         {tab.selection === "profile" && <Profile user={user} />}
       </main>
 

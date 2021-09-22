@@ -10,21 +10,54 @@ const CreatePost = ({ user, setTab }) => {
 
   const [image, setImage] = useState("");
   const [caption, setCaption] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+
+  const inputRef = useRef();
 
   const handleForm = async (e) => {
+    setIsUploading(true);
     e.preventDefault();
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "parea_app");
+    data.append("cloud_name", "odysseas");
 
+    const cloudRes = await fetch(
+      " https://api.cloudinary.com/v1_1/odysseas/image/upload",
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+
+    const cloudResponse = await cloudRes.json();
+    const { secure_url } = cloudResponse;
+    console.log(cloudResponse);
+
+    console.log(cloudRes);
+    if (cloudRes.status !== 200) {
+      toast({
+        title: "Oh oh.",
+        description: "Something went wrong... Try again...maybe?",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+      setIsUploading(false);
+      return;
+    }
     const res = await fetch("/api/posts/createPost", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        avatarSrc: user.imageSrc,
+        avatarSrc:
+          "https://i.pinimg.com/280x280_RS/2d/1e/e7/2d1ee7840c61457443e91e29b7c3af9a.jpg",
         caption,
         comments: [],
         likes: [],
-        imageSrc: image,
+        imageSrc: secure_url,
         username: "luffy",
         dateCreated: new Date(Date.now()).toISOString(),
       }),
@@ -32,6 +65,7 @@ const CreatePost = ({ user, setTab }) => {
 
     setImage("");
     setCaption("");
+    inputRef.current.value = null;
 
     if (res.status === 201) {
       toast({
@@ -41,6 +75,7 @@ const CreatePost = ({ user, setTab }) => {
         duration: 2000,
         isClosable: true,
       });
+      setIsUploading(false);
     }
   };
 
@@ -85,9 +120,10 @@ const CreatePost = ({ user, setTab }) => {
         className="flex flex-col justify-center items-center"
       >
         <div className="my-4">
-          <FileBase64
-            multiple={false}
-            onDone={({ base64 }) => setImage(base64)}
+          <input
+            ref={inputRef}
+            type="file"
+            onChange={(e) => setImage(e.target.files[0])}
           />
         </div>
         <div
@@ -95,7 +131,11 @@ const CreatePost = ({ user, setTab }) => {
           style={{ height: `${image ? "100%" : "42vh"}` }}
         >
           {image && (
-            <img src={image} alt="uploaded image" className="w-full h-full" />
+            <img
+              src={URL.createObjectURL(image)}
+              alt="uploaded image"
+              className="w-full h-full"
+            />
           )}
         </div>
 
@@ -116,6 +156,16 @@ const CreatePost = ({ user, setTab }) => {
           Post
         </button>
       </form>
+      {isUploading && (
+        <div>
+          <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black opacity-70"></div>
+          <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center">
+            <div className="p-20 text-center bg-white">
+              <h1 className="text-black text-lg font-medium">Uploading...</h1>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

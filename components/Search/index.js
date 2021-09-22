@@ -1,26 +1,16 @@
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/input";
-import { useEffect, useState } from "react";
+import { InputRightElement } from "@chakra-ui/react";
+import { useRef, useState } from "react";
+import UserList from "./UserList";
 
-const Search = () => {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchUsers = async () => {
-    const res = await fetch("/api/user/allUsers");
-    const { users } = await res.json();
-    console.log(users);
-    setUsers(users);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+const Search = ({ user }) => {
+  const [search, setSearch] = useState("");
+  const inputRef = useRef();
 
   return (
-    <div>
-      <span className="flex justify-center items-center ">
-        <InputGroup m={6} w={"full"}>
+    <div className="p-4">
+      <span className="flex justify-center items-center mb-3">
+        <InputGroup w={"full"}>
           <InputLeftElement
             pointerEvents="none"
             children={
@@ -40,15 +30,40 @@ const Search = () => {
               </>
             }
           />
-          <Input placeholder="Search" />
+          <Input
+            placeholder="Search"
+            ref={inputRef}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <InputRightElement
+            onClick={() => {
+              setSearch("");
+              inputRef.current.focus();
+            }}
+            children={
+              <>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </>
+            }
+          />
         </InputGroup>
       </span>
 
-      <div className="flex flex-col justify-center items-center">
-          {users && users.map((user) => (
-              <p key={user._id}>{user.username}</p>
-          ))}
-      </div>
+      <UserList search={search} myUser={user} />
     </div>
   );
 };

@@ -56,19 +56,19 @@ const Post = ({
   return (
     <div className="flex flex-col my-2">
       <div className="flex items-center py-1 px-2">
-        <img
-          className="rounded-full h-7 w-7 pointer-events-auto"
-          style={{ pointerEvents: "all" }}
-          src={avatarSrc}
-          alt="profile"
-        />
+        <img className="rounded-full h-7 w-7 " src={avatarSrc} alt="profile" />
 
         <Link href={`/p/${username}`}>
           <p className="font-medium ml-2">{username}</p>
         </Link>
       </div>
       <div className="flex justify-center items-center relative">
-        <img {...bind} className="my-2 w-screen" src={imageSrc} alt="mountains" />
+        <img
+          {...bind}
+          className="my-2 w-screen"
+          src={imageSrc}
+          alt="mountains"
+        />
         {showAnimation && (
           <svg
             className="text-red-500 absolute w-24 animate-ping-long"
@@ -104,6 +104,11 @@ const Post = ({
           </Link>
           <p className="text-sm"> {caption}</p>
         </div>
+        {comments.length > 0 && (
+          <div className="text-center py-1 w-full flex justify-center items-center">
+            <div className="border-b border-gray-700  w-11/12 "></div>
+          </div>
+        )}
         <Comments
           allComments={comments}
           myUsername={myUsername}

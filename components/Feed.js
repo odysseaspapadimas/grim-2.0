@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Post from "./Post/Post";
 import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 
-const Feed = ({ user }) => {
+const Feed = ({ user, tab }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -17,15 +17,14 @@ const Feed = ({ user }) => {
       }),
     });
     const { posts } = await res.json();
-    console.log(posts)
+    console.log(posts);
     setPosts(posts);
     setLoading(false);
   };
 
   useEffect(() => {
-    console.time("posts");
+    if (tab.selection !== "feed") return;
     fetchPosts();
-    console.timeEnd("posts");
   }, []);
 
   return (
@@ -38,7 +37,12 @@ const Feed = ({ user }) => {
                 <SkeletonCircle size="10" />
                 <SkeletonText className="ml-2" noOfLines={1} width={"50px"} />
               </div>
-              <Skeleton className="my-2" height="240px" />
+              <Skeleton
+                startColor="gray.800"
+                endColor="gray.600"
+                className="my-2"
+                height="240px"
+              />
               <div className="px-2">
                 <div className="flex items-center space-x-2">
                   <SkeletonCircle size="7" />
@@ -59,8 +63,10 @@ const Feed = ({ user }) => {
             </div>
           ))}
         </>
-      ) : posts.length === 0 && !loading ? (
-        <p>Go follow someone</p>
+      ) : posts.length === 0 && user.following.length > 0 && !loading ? (
+        <p>No posts yet!</p>
+      ) : user.following.length === 0 && !loading ? (
+        <p>Go follow some users first!</p>
       ) : (
         <>
           {posts.map((post) => {

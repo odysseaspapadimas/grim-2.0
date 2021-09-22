@@ -9,6 +9,7 @@
     "@chakra-ui/react": "^1.6.7",
     "@emotion/react": "11",
     "@emotion/styled": "11",
+    "cloudinary-react": "^1.7.0",
     "date-fns": "^2.24.0",
     "framer-motion": "4",
     "loading": "^1.13.3",

@@ -32,8 +32,40 @@ const Navbar = ({ user, tab, setTab }) => {
           />
         </svg>
       </div>
-      <div onClick={() => setTab({ selection: "create" })}>+</div>
-      <div onClick={() => setTab({ selection: "notifications" })}>Not</div>
+      <div onClick={() => setTab({ selection: "create" })}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6 "
+          fill="#fff"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeOpacity="1"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 4v16m8-8H4"
+          />
+        </svg>
+      </div>
+      <div onClick={() => setTab({ selection: "notifications" })}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          viewBox="0 0 20 20"
+          stroke="#fff"
+          fill={`${
+            tab.selection === "notifications" ? "#fff" : "hsl(210, 21%, 5%)"
+          }`}
+        >
+          <path
+            fillRule="evenodd"
+            d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </div>
       <div onClick={() => setTab({ selection: "profile" })}>
         <img
           src={user.imageSrc}
