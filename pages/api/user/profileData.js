@@ -10,6 +10,7 @@ export default async function profileData(req, res) {
   const userPosts = await db
     .collection("posts")
     .find({ username: user })
+    .sort({ dateCreated: -1 })
     .toArray();
 
   const postAmount = await db

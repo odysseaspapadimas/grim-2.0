@@ -65,7 +65,7 @@ const Profile = ({ user }) => {
           </span>
         </div>
       </div>
-      <div className="grid grid-cols-3 mt-4" style={{ gap: "2px" }}>
+      <div className="grid grid-cols-3 mt-4 mb-16" style={{ gap: "2px" }}>
         {posts.length > 0 &&
           posts.map((post) => (
             <div>

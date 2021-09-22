@@ -52,13 +52,12 @@ const CreatePost = ({ user, setTab }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        avatarSrc:
-          "https://i.pinimg.com/280x280_RS/2d/1e/e7/2d1ee7840c61457443e91e29b7c3af9a.jpg",
+        avatarSrc: user.imageSrc,
         caption,
         comments: [],
         likes: [],
         imageSrc: secure_url,
-        username: "luffy",
+        username: user.username,
         dateCreated: new Date(Date.now()).toISOString(),
       }),
     });
