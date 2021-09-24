@@ -51,8 +51,8 @@ const Profile = ({ userProfile, user, posts }) => {
   };
 
   return (
-    <div className=" px-3 py-4">
-      <div className="flex items-center">
+    <div className="py-4">
+      <div className="flex items-center ml-4">
         <button className="" onClick={() => router.back()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -98,7 +98,7 @@ const Profile = ({ userProfile, user, posts }) => {
         </div>
       </div>
       <div className="text-center">
-        <button
+      <button
           onClick={() => handleFollow()}
           className={`rounded-sm py-1 border ${
             !isFollowing
