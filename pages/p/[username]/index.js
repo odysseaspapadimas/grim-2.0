@@ -1,4 +1,4 @@
-import { getSession, signOut, useSession } from "next-auth/client";
+import { getSession } from "next-auth/client";
 import { useRouter } from "next/router";
 import useUser from "../../../hooks/useUser";
 import ReactLoading from "react-loading";
@@ -111,9 +111,9 @@ const Profile = ({ userProfile, user, posts }) => {
         </button>
       </div>
 
-      <div className="grid grid-cols-3 mt-4 mb-16" style={{ gap: "2px" }}>
-        {posts.length > 0 &&
-          posts.map((post) => (
+      {posts.length > 0 ? (
+        <div className="grid grid-cols-3 mt-4 mb-16" style={{ gap: "2px" }}>
+          {posts.map((post) => (
             <Link
               href={`/p/${userProfile.username}/posts?post=${post._id}`}
               key={post._id}
@@ -126,7 +126,12 @@ const Profile = ({ userProfile, user, posts }) => {
               />
             </Link>
           ))}
-      </div>
+        </div>
+      ) : (
+        <div className="text-center w-full mt-4">
+          <h1 className="text-xl">No posts yet.</h1>
+        </div>
+      )}
     </div>
   );
 };

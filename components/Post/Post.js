@@ -33,9 +33,8 @@ const Post = ({
   const [toggleLiked, setToggleLiked] = useState(
     likes.includes(myUsername) ? true : false
   );
-    console.log(myUsername, 'myusername')
+  
   const [showAnimation, setShowAnimation] = useState(false);
-
 
   const postRef = useRef();
 
@@ -132,33 +131,33 @@ const Post = ({
             </button>
           )} */}
         </div>
-        <Menu placement="bottom-end">
-          <MenuButton
-            as={IconButton}
-            bgColor={"transparent"}
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
-                />
-              </svg>
-            }
-            _focus={{ bgColor: "transparent" }}
-            _hover={{ bgColor: "transparent" }}
-            _expanded={{ bgColor: "transparent" }}
-          ></MenuButton>
-          <MenuList bgColor={"gray.800"} minWidth="240px">
-            <MenuOptionGroup defaultValue="date" type="radio">
-              {username === myUsername && (
+        {username === myUsername && (
+          <Menu placement="bottom-end">
+            <MenuButton
+              as={IconButton}
+              bgColor={"transparent"}
+              icon={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+                  />
+                </svg>
+              }
+              _focus={{ bgColor: "transparent" }}
+              _hover={{ bgColor: "transparent" }}
+              _expanded={{ bgColor: "transparent" }}
+            ></MenuButton>
+            <MenuList bgColor={"gray.800"} minWidth="240px">
+              <MenuOptionGroup defaultValue="date" type="radio">
                 <MenuItem
                   onClick={handleDelete}
                   _highlighted={{ bg: "secondary.100" }}
@@ -183,18 +182,10 @@ const Post = ({
                 >
                   Delete
                 </MenuItem>
-              )}
-              <MenuItemOption
-                _highlighted={{ bg: "secondary.100" }}
-                _focus={{ bg: "secondary.100" }}
-                _hover={{ bg: "secondary.100" }}
-                value="freq"
-              >
-                EzA
-              </MenuItemOption>
-            </MenuOptionGroup>
-          </MenuList>
-        </Menu>
+              </MenuOptionGroup>
+            </MenuList>
+          </Menu>
+        )}
       </div>
       <div className="flex justify-center items-center relative">
         <img

@@ -24,6 +24,7 @@ const Feed = ({ user, tab }) => {
 
   useEffect(() => {
     if (tab.selection !== "feed") return;
+    console.log(tab, 'tab feed')
     fetchPosts();
   }, []);
 
