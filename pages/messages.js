@@ -2,14 +2,24 @@ import { useRouter } from "next/router";
 import useUser from "../hooks/useUser";
 import ReactLoading from "react-loading";
 import { useSession } from "next-auth/client";
+import { useState, useEffect } from "react";
 
 const messages = () => {
   const router = useRouter();
+  const [session] = useSession();
+  const [user, setUser] = useState({});
 
-  const { user } = useUser();
-  console.log(user);
+  useEffect(() => {
+    if (!session) return;
+    const fetchUser = async () => {
+      const { user } = await useUser(session);
 
-  if (!user) {
+      setUser(user);
+    };
+    fetchUser();
+  }, []);
+
+  if (!user.username) {
     return (
       <div className="w-full min-h-screen flex justify-center items-center">
         <ReactLoading

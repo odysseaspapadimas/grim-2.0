@@ -81,7 +81,7 @@ const Feed = ({ user, tab }) => {
                 likes={post.likes}
                 comments={post.comments}
                 date={post.dateCreated}
-                myUsername={user.username}
+                myUser={user}
               />
             );
           })}

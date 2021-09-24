@@ -29,11 +29,3 @@ export default async function createPost(req, res) {
 
   res.status(201).send({ response });
 }
-
-export const config = {
-    api: {
-        bodyParser: {
-            sizeLimit: '20mb'
-        }
-    }
-}

@@ -121,6 +121,7 @@ const CreatePost = ({ user, setTab }) => {
         <div className="my-4">
           <input
             ref={inputRef}
+            required
             type="file"
             onChange={(e) => setImage(e.target.files[0])}
           />
@@ -150,7 +151,9 @@ const CreatePost = ({ user, setTab }) => {
 
         <button
           type="submit"
-          className="px-10 my-2 py-3 bg-secondary hover:bg-secondary-hover"
+          className={`px-10 my-2 py-3 ${
+            image ? "bg-secondary hover:bg-secondary-hover" : "bg-gray-500"
+          }`}
         >
           Post
         </button>

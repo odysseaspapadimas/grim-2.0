@@ -1,5 +1,6 @@
 import { signOut } from "next-auth/client";
 import { useEffect, useState } from "react";
+import Link from 'next/link'
 
 const Profile = ({ user }) => {
   const [postAmount, setPostAmount] = useState(0);
@@ -68,14 +69,14 @@ const Profile = ({ user }) => {
       <div className="grid grid-cols-3 mt-4 mb-16" style={{ gap: "2px" }}>
         {posts.length > 0 &&
           posts.map((post) => (
-            <div>
+            <Link href={`/p/${user.username}/posts?post=${post._id}`} key={post._id}>
               <img
                 src={post.imageSrc}
                 alt=""
                 className="object-cover"
                 style={{ height: "33.33vw", width: "33.33vw" }}
               />
-            </div>
+            </Link>
           ))}
       </div>
     </div>
