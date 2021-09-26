@@ -33,7 +33,7 @@ const messages = () => {
   }
 
   return (
-    <div className="relative flex items-center w-screen justify-center py-3">
+    <div className="relative flex flex-col items-center w-screen justify-center py-3">
       <button className="absolute top-3 left-4" onClick={() => router.back()}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +50,9 @@ const messages = () => {
           />
         </svg>
       </button>
-      <h1>{user.username}</h1>
+      <h1 className="text-lg border-b-2 border-white mb-4">Messages</h1>
+      <h3>Coming soon...</h3>
+      <p className="fixed bottom-1 right-1 text-xs">Reto sack ma</p>
     </div>
   );
 };

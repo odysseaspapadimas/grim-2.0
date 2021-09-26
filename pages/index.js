@@ -11,6 +11,7 @@ import { useMediaQuery } from "@chakra-ui/media-query";
 import Search from "../components/Search";
 import { useRouter } from "next/router";
 import CreatePost from "../components/CreatePost";
+import Notifications from "../components/Notifications";
 
 export default function Home() {
   const [session] = useSession();
@@ -48,7 +49,7 @@ export default function Home() {
       const { user: newUser } = await useUser(session);
       if (JSON.stringify(newUser) !== JSON.stringify(user)) {
         setUser(newUser);
-      } 
+      }
     };
     fetchUser();
   }, [tab, session]);
@@ -127,6 +128,7 @@ export default function Home() {
         {tab.selection === "create" && (
           <CreatePost user={user} setTab={setTab} />
         )}
+        {tab.selection === "notifications" && <Notifications user={user} />}
         {tab.selection === "profile" && <Profile user={user} />}
       </main>
 
