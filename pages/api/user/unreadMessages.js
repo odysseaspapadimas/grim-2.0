@@ -19,7 +19,5 @@ export default async function handler(req, res) {
     })
     .toArray();
 
-  console.log(unreadMessages, "response read");
-
   res.status(200).send(unreadMessages);
 }

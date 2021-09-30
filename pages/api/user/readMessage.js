@@ -16,7 +16,5 @@ export default async function handler(req, res) {
     }
   );
 
-  console.log(response, "response read");
-
   res.status(201).send(response);
 }

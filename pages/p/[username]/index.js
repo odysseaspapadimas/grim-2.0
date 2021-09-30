@@ -33,9 +33,9 @@ const Profile = () => {
   }, [session]);
 
   useEffect(() => {
-    if (!user.username) return;
+    if (!user.username || !userProfile) return;
     setIsFollowing(user.following.includes(userProfile.username));
-  }, [user]);
+  }, [user, userProfile]);
 
   if ((!user && !error) || !userProfile || !posts) {
     return (
