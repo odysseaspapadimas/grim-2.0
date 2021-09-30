@@ -4,7 +4,12 @@ import ReactLoading from "react-loading";
 import { useSession } from "next-auth/client";
 import { useState, useEffect, useRef } from "react";
 
-import { Input, InputLeftElement, InputRightElement, InputGroup } from "@chakra-ui/react";
+import {
+  Input,
+  InputLeftElement,
+  InputRightElement,
+  InputGroup,
+} from "@chakra-ui/react";
 import useSWR from "swr";
 import ChatItem from "../../components/Chats/ChatItem";
 import Link from "next/link";
@@ -20,7 +25,7 @@ const inbox = () => {
 
   const [input, setInput] = useState("");
 
-  const inputRef = useRef()
+  const inputRef = useRef();
 
   const { data: messages, error } = useSWR(
     `/api/user/messages?user=${user.username}`,
@@ -89,76 +94,88 @@ const inbox = () => {
       <p className="fixed bottom-1 right-1 text-xs">Reto sack ma</p>
 
       <InputGroup w={"full"}>
-          <InputLeftElement
-            pointerEvents="none"
-            children={
-              <>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="#fff"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </>
-            }
-          />
-          <Input
-            placeholder="Search"
-            ref={inputRef}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
-          <InputRightElement
-            onClick={() => {
-              setInput("");
-              inputRef.current.focus();
-            }}
-            children={
-              <>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </>
-            }
-          />
-        </InputGroup>
+        <InputLeftElement
+          pointerEvents="none"
+          children={
+            <>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="#fff"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </>
+          }
+        />
+        <Input
+          placeholder="Search"
+          ref={inputRef}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
+        <InputRightElement
+          onClick={() => {
+            setInput("");
+            inputRef.current.focus();
+          }}
+          children={
+            <>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </>
+          }
+        />
+      </InputGroup>
       {input && users ? (
         <div className="flex flex-col">
-          {users
-            .filter(
-              (_user) =>
-                _user.username.includes(input.toLowerCase()) &&
-                _user.username !== user.username
-            )
-            .map((user) => (
-              <div key={user.username} className="flex items-center p-2 border border-secondary my-2">
-                <Link href={`/chats?w=${user.username}`}>
-                  <img
-                    src={user.imageSrc}
-                    alt="user profile"
-                    className="h-7 w-7 rounded-full mr-2"
-                  />
-                </Link>
-                <Link href={`/chats?w=${user.username}`}>{user.username}</Link>
-              </div>
-            ))}
+          {users.filter(
+            (_user) =>
+              _user.username.includes(input.toLowerCase()) &&
+              _user.username !== user.username
+          ).length > 0 ?
+            users
+              .filter(
+                (_user) =>
+                  _user.username.includes(input.toLowerCase()) &&
+                  _user.username !== user.username
+              )
+              .map((user) => (
+                <div
+                  key={user.username}
+                  className="flex items-center p-2 border border-secondary my-2"
+                >
+                  <Link href={`/chats?w=${user.username}`}>
+                    <img
+                      src={user.imageSrc}
+                      alt="user profile"
+                      className="h-7 w-7 rounded-full mr-2"
+                    />
+                  </Link>
+                  <Link href={`/chats?w=${user.username}`}>
+                    {user.username}
+                  </Link>
+                </div>
+              )) : (
+                <h1>No users found...</h1>
+              )}
         </div>
       ) : (
         <>
