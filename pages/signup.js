@@ -7,11 +7,13 @@ const signup = () => {
   const [username, setUsername] = useState("");
   const [session] = useSession();
   const [error, setError] = useState("");
+  const [disabled, setDisabled] = useState(false);
 
   const router = useRouter();
 
   const handleForm = async (e) => {
-    console.log('helloooo')
+    console.log("helloooo");
+    setDisabled(true);
     e.preventDefault();
 
     const res = await fetch("/api/auth/createUser", {
@@ -25,12 +27,13 @@ const signup = () => {
         fullName: session.user.name,
       }),
     });
-    console.log(res)
+    console.log(res);
     if (res.status === 201) {
       router.push("/");
     } else {
       const { error } = await res.json();
       setError(error);
+      setDisabled(false);
     }
   };
 
@@ -46,10 +49,10 @@ const signup = () => {
         onSubmit={handleForm}
         action="POST"
         className="border border-gray-600 flex flex-col items-center h-full py-4"
-        style={{ width: "80vw"}}
+        style={{ width: "80vw" }}
       >
         <h1 className="text-xl font-semibold">Grim</h1>
-        {error && <p className="text-sm text-red-600"></p>}
+        {error && <p className="text-sm text-red-600">{error}</p>}
         <h3>Choose a username:</h3>
         <span className="mt-1">
           <Input
@@ -61,6 +64,7 @@ const signup = () => {
         </span>
         <button
           className="px-3 py-2 rounded-sm mt-2 bg-secondary hover:bg-secondary-hover"
+          disabled={disabled}
           type="submit"
         >
           Sign Up
