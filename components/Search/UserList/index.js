@@ -8,7 +8,7 @@ const UserList = ({ search, myUser }) => {
 
   const fetchUsers = async () => {
     const res = await fetch("/api/user/allUsers");
-    const { users } = await res.json();
+    const users = await res.json();
     console.log(users);
     setUsers(users);
     setLoading(false);

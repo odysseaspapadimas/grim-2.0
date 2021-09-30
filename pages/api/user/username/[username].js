@@ -6,9 +6,8 @@ export default async function username(req, res) {
   const db = client.db();
 
   const { username } = req.query;
-  console.log(username, req.query);
-
+  console.log(username, "query");
   const user = await db.collection("users").find({ username }).toArray();
-  console.log(user);
-  res.status(200).send({ user });
+
+  res.status(200).send(user[0]);
 }

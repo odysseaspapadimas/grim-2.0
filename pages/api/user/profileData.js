@@ -6,12 +6,12 @@ export default async function profileData(req, res) {
   const db = client.db();
 
   const user = req.query.q;
-  
-  const userPosts = await db
+
+  const posts = await db
     .collection("posts")
     .find({ username: user })
     .sort({ dateCreated: -1 })
     .toArray();
 
-  res.status(200).send({ userPosts, postAmount: userPosts.length });
+  res.status(200).send(posts);
 }

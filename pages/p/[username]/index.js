@@ -1,19 +1,43 @@
-import { getSession } from "next-auth/client";
+import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
 import useUser from "../../../hooks/useUser";
 import ReactLoading from "react-loading";
-import clientPromise from "../../../lib/mongodb";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import useSWR from "swr";
+import fetcher from "../../../helpers/fetcher";
 
-const Profile = ({ userProfile, user, posts }) => {
+const Profile = () => {
   const router = useRouter();
+  const [session] = useSession();
+  const [user, setUser] = useState({});
 
-  const [isFollowing, setIsFollowing] = useState(
-    user.following.includes(userProfile.username)
+  const [isFollowing, setIsFollowing] = useState();
+
+  const { data: userProfile, error } = useSWR(
+    `/api/user/username/${router.query.username}`,
+    fetcher
+  );
+  const { data: posts, error: postsError } = useSWR(
+    `/api/user/profileData?q=${router.query.username}`,
+    fetcher
   );
 
-  if (!user.username) {
+  useEffect(() => {
+    if (!session) return;
+    const fetchUser = async () => {
+      const { user } = await useUser(session);
+      setUser(user);
+    };
+    fetchUser();
+  }, [session]);
+
+  useEffect(() => {
+    if (!user.username) return;
+    setIsFollowing(user.following.includes(userProfile.username));
+  }, [user]);
+
+  if ((!user && !error) || !userProfile || !posts) {
     return (
       <div className="w-full min-h-screen flex justify-center items-center">
         <ReactLoading
@@ -26,7 +50,7 @@ const Profile = ({ userProfile, user, posts }) => {
     );
   }
 
-  if (!userProfile) {
+  if (userProfile && userProfile.length === 0) {
     return (
       <>
         <h1>User not found</h1>
@@ -82,7 +106,7 @@ const Profile = ({ userProfile, user, posts }) => {
 
         <div className="flex justify-between items-center ml-8 w-full">
           <span className="text-center">
-            <p className="font-medium">{posts.length}</p>
+            <p className="font-medium">{posts ? posts.length : "0"}</p>
             <p className="text-sm">{posts.length === 1 ? "Post" : "Posts"}</p>
           </span>
           <span className="text-center">
@@ -98,7 +122,7 @@ const Profile = ({ userProfile, user, posts }) => {
         </div>
       </div>
       <div className="text-center">
-      <button
+        <button
           onClick={() => handleFollow()}
           className={`rounded-sm py-1 border ${
             !isFollowing
@@ -137,36 +161,5 @@ const Profile = ({ userProfile, user, posts }) => {
 };
 
 export default Profile;
-
-export async function getServerSideProps(context) {
-  const client = await clientPromise;
-
-  const db = client.db();
-  const { username } = context.query;
-
-  const { req } = context;
-  const session = await getSession({ req });
-
-  const userProfile = await db.collection("users").find({ username }).toArray();
-
-  const { user } = await useUser(session);
-
-  const userPosts = await db
-    .collection("posts")
-    .find({ username })
-    .sort({ dateCreated: -1 })
-    .toArray();
-
-  return {
-    props: {
-      userProfile:
-        userProfile.length > 0
-          ? JSON.parse(JSON.stringify(userProfile[0]))
-          : null,
-      user,
-      posts: JSON.parse(JSON.stringify(userPosts)),
-    }, //Only pass prop if there's a user
-  };
-}
 
 Profile.requireAuth = true;

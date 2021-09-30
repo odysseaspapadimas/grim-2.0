@@ -1,18 +1,16 @@
 import { signOut } from "next-auth/client";
 import { useEffect, useState } from "react";
-import Link from 'next/link'
+import Link from "next/link";
 
 const Profile = ({ user }) => {
-  const [postAmount, setPostAmount] = useState(0);
   const [posts, setPosts] = useState([]);
 
   const fetchProfileData = async () => {
     const res = await fetch(`/api/user/profileData?q=${user.username}`);
 
-    const { userPosts, postAmount } = await res.json();
+    const posts = await res.json();
 
-    setPosts(userPosts);
-    setPostAmount(postAmount);
+    setPosts(posts);
   };
 
   useEffect(() => {
@@ -51,8 +49,8 @@ const Profile = ({ user }) => {
 
         <div className="flex justify-between items-center ml-8 w-full">
           <span className="text-center">
-            <p className="font-medium">{postAmount}</p>
-            <p className="text-sm">{postAmount === 1 ? "Post" : "Posts"}</p>
+            <p className="font-medium">{posts.length}</p>
+            <p className="text-sm">{posts.length === 1 ? "Post" : "Posts"}</p>
           </span>
           <span className="text-center">
             <p className="font-medium">{user.followers.length}</p>
@@ -69,7 +67,10 @@ const Profile = ({ user }) => {
       <div className="grid grid-cols-3 mt-4 mb-16" style={{ gap: "2px" }}>
         {posts.length > 0 &&
           posts.map((post) => (
-            <Link href={`/p/${user.username}/posts?post=${post._id}`} key={post._id}>
+            <Link
+              href={`/p/${user.username}/posts?post=${post._id}`}
+              key={post._id}
+            >
               <img
                 src={post.imageSrc}
                 alt=""

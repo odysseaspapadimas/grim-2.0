@@ -12,6 +12,8 @@ import Search from "../components/Search";
 import { useRouter } from "next/router";
 import CreatePost from "../components/CreatePost";
 import Notifications from "../components/Notifications";
+import useSWR from "swr";
+import fetcher from "../helpers/fetcher";
 
 export default function Home() {
   const [session] = useSession();
@@ -20,6 +22,26 @@ export default function Home() {
   const [tab, setTab] = useState({ selection: "feed" });
   const [isLargerThan500] = useMediaQuery("(min-width: 650px)");
   const router = useRouter();
+  const [unreadMessages, setUnreadMessages] = useState(0);
+
+  const { data, error } = useSWR(
+    `/api/user/unreadMessages?user=${user.username}`,
+    fetcher
+  );
+
+  useEffect(() => {
+    if (!data) return;
+    console.log(data, 'data');
+    data.forEach((chat) => {
+      if (chat.messages[chat.messages.length - 1].sender !== user.username) {
+        setUnreadMessages((prev) => prev + 1);
+      }
+    });
+
+    return () => {
+      setUnreadMessages(0);
+    };
+  }, [data]);
 
   const doesUserExist = async (email) => {
     const res = await fetch("/api/login/userExists", {
@@ -102,7 +124,7 @@ export default function Home() {
       {tab.selection === "feed" && (
         <div className="fixed z-10 top-0 flex items-center w-full justify-between px-3 py-2 bg-primary border-b-2 border-gray-500">
           <h1 className="text-2xl">Parea</h1>
-          <Link href="/messages" className="">
+          <div onClick={() => router.push("/chats")} className="relative">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-7 w-7 "
@@ -118,7 +140,12 @@ export default function Home() {
                 d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
               />
             </svg>
-          </Link>
+            {unreadMessages > 0 && (
+              <div className="absolute top-0 right-0 text-xs rounded-full bg-red-500 w-4 h-4 flex justify-center items-center">
+                {unreadMessages}
+              </div>
+            )}
+          </div>
         </div>
       )}
 

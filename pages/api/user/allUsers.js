@@ -8,7 +8,7 @@ export default async (req, res) => {
   try {
     const users = await db.collection("users").find({}).toArray();
 
-    res.status(200).send({ users });
+    res.status(200).send(users);
   } catch (error) {
     res.status(500).send({ error });
   }
