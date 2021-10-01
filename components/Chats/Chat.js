@@ -3,6 +3,8 @@ import Link from "next/link";
 import useSWR from "swr";
 import fetcher from "../../helpers/fetcher";
 import { useState, useRef, useEffect } from "react";
+import { parseISO } from "date-fns";
+import format from "date-fns/format";
 
 const Chat = ({ user, otherUser }) => {
   const [input, setInput] = useState("");
@@ -125,13 +127,14 @@ const Chat = ({ user, otherUser }) => {
                 {messages.messages.map(({ content, sender, dateSent }) => (
                   <div
                     key={dateSent + content}
-                    className={`flex items-center ${
+                    className={`flex flex-col ${
                       sender === otherUser.username ? "self-start" : "self-end"
                     }`}
                   >
                     <div className="bg-secondary py-2 px-3 rounded-xl">
                       <p> {content}</p>
                     </div>
+                    <p className="text-sm text-gray-500 self-end" >{format(parseISO(dateSent), "HH:mm")}</p>
                   </div>
                 ))}
                 <span ref={scrollRef}></span>
