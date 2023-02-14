@@ -91,7 +91,6 @@ const inbox = () => {
         </Link>
       </div>
       <h1 className="text-lg border-b-2 border-white mb-4">Messages</h1>
-      <p className="fixed bottom-1 right-1 text-xs">Reto sack ma</p>
 
       <InputGroup w={"full"}>
         <InputLeftElement
